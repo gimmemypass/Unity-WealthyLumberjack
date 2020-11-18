@@ -9,10 +9,8 @@ public class PlayerMovementState : PlayerState
     [SerializeField] private float _speed = 6f;
     [SerializeField] private float _turnSmoothTime = 0.1f;
     
-    private CharacterController _controller;
     private Animator _animator;
     private float _turnSmoothSpeed;
-    private int _speedAnimationHash;
     private float _percentsOfSpeed;
 
     #endregion
@@ -21,10 +19,7 @@ public class PlayerMovementState : PlayerState
     public override void Init(Player player)
     {
         base.Init(player);
-        _controller = player.GetComponent<CharacterController>();
-        _animator = player.GetComponent<Animator>();
-        _speedAnimationHash = Animator.StringToHash("Speed");
-        
+        _animator = player.GetAnimator(); 
     }
     public override void Run()
     {
@@ -36,7 +31,7 @@ public class PlayerMovementState : PlayerState
         }
         else
         {
-            _animator.SetFloat(_speedAnimationHash, 0);
+            _animator.SetFloat("Speed", 0);
             IsFinished = true;
         }
     }
@@ -46,12 +41,11 @@ public class PlayerMovementState : PlayerState
     #region Methods
     private void MovePlayer(Vector3 direction)
     {
-        _animator.SetFloat(_speedAnimationHash, _percentsOfSpeed);
-        //Debug.Log($"direction magnitude is {_percentsOfSpeed}");
+        _animator.SetFloat("Speed", _percentsOfSpeed);
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
         float angle = Mathf.SmoothDampAngle(_player.transform.eulerAngles.y, targetAngle, ref _turnSmoothSpeed, _turnSmoothTime);
         _player.transform.rotation = Quaternion.Euler(0, angle, 0);
-        _controller.Move(direction * (_speed * _percentsOfSpeed) * Time.deltaTime);
+        _player.GetController().Move(direction * (_speed * _percentsOfSpeed) * Time.deltaTime);
 
     }
     #endregion

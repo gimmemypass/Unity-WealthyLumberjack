@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7543bcb8995e71f438ee775a6da8a9d2, type: 3}
-  m_Name: PlayerChoppingState
+  m_Script: {fileID: 11500000, guid: a45cd8a5c7e726f49a6736ed360c57ec, type: 3}
+  m_Name: BattleMetalAxe
   m_EditorClassIdentifier: 
-  _turnSmoothTime: 0.1
-  treeLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  choppingRange: 1.2
+  _name: Battle Metal Axe
+  _range: 1.4
+  _baseDamage: 15
+  _description: Stained with a resine of the enemies
+  _icon: {fileID: 21300000, guid: 66dbce533729df946bee423ca768dd8c, type: 3}
