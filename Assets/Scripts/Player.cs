@@ -8,19 +8,24 @@ public class Player : MonoBehaviour
     [Header("Initial Parameters")]
     [SerializeField] private Joystick _joystick;
     [SerializeField] private Transform _rightHand; //for axe
+    [SerializeField] private PlayerUIManager _playerUIManager;
 
     [Header("States")]
     [SerializeField] private PlayerState _movingState;
     [SerializeField] private PlayerState _choppingState;
+    [SerializeField] private PlayerState _superJumpState;
 
     [Header("Actual State")]
     [SerializeField] private PlayerState _currentState;
 
-    private PlayerState _nextState;
     private CharacterController _controller;
     private Animator _animator;
+
     private Tool _tool;
     private int _level;
+    private int _money;
+    private Inventory _inventory;
+    //todo  инвентарь 
     #endregion
 
     #region Interface
@@ -35,7 +40,43 @@ public class Player : MonoBehaviour
     public Animator GetAnimator() => _animator;
     public Tool GetTool() => _tool;
     public int GetLevel() => _level;
+    public Inventory GetInventory() => _inventory;
 
+    public void LevelUp()
+    {
+        _level++;
+    }
+    public int GetMoney() => _money; 
+    public void AddMoney(int money)
+    {
+        if(money > 0)
+        {
+            _money += money;
+        }
+        else
+        {
+            throw new System.Exception("money < 0");
+        }
+    }
+    public bool TryDecreaseMoney(int money)
+    {
+        if(money > 0)
+        {
+            if(_money > money)
+            {
+                _money -= money;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            throw new System.Exception("money < 0");
+        }
+    }
     #endregion
 
     #region Methods
@@ -44,38 +85,49 @@ public class Player : MonoBehaviour
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _level = 1;
-        SetState(_movingState, _choppingState); 
+        _money = 2;
+        _inventory = new Inventory();
+
+        SetState(_movingState); 
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _currentState.Finish();
+            SetState(_superJumpState); 
+        }
         _currentState.Run();
         if (_currentState.IsFinished)
         {
             SetNextState(); 
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-            GetComponent<Animator>().SetTrigger("Chopping");
     }
 
-    private void SetState(PlayerState currentState, PlayerState nextState)
+    private void SetState(PlayerState currentState)
     {
         _currentState = Instantiate(currentState);
         _currentState.Init(this);
-        _nextState = nextState;
     }
     private void SetNextState()
     {
-        var temp = _currentState;
-        _currentState = Instantiate(_nextState);
-        _currentState.Init(this);
-        _nextState = temp;
+        var direction = GetJoystickInputValue();
+        var _percentsOfSpeed = direction.magnitude;
+        if(_percentsOfSpeed >= PlayerMovementState.STARTVALUE)
+        {
+            SetState(_movingState);
+        }
+        else
+        {
+            SetState(_choppingState);
+        }
     }
 
     public void TakeTool(Tool tool, Vector3 pos, Vector3 rot, Vector3 scale)
     {
         if(_tool != null)
         {
-            Destroy(_tool);
+            Destroy(_tool.gameObject);
         }
         tool.transform.parent = _rightHand;
         tool.transform.localPosition = pos;
@@ -84,6 +136,5 @@ public class Player : MonoBehaviour
 
         _tool = tool; 
     }
-
     #endregion
 }

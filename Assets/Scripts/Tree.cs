@@ -5,9 +5,12 @@ using UnityEngine;
 public class Tree : MonoBehaviour
 {
     #region Data
-    [SerializeField] private float _health;
+    [SerializeField] private GameObject _resource;
+    [SerializeField] private int _countResources = 4;
 
+    private ResourceData _data;
     private Animator _animator;
+    private float _health;
 
     #endregion
 
@@ -31,11 +34,16 @@ public class Tree : MonoBehaviour
     #region Methods
     private void Start()
     {
+        _data = _resource.GetComponent<Resource>().GetData();
         _animator = GetComponent<Animator>();
+        _health = _data.Health;
     }
     private IEnumerator Die()
     {
-        //todo
+        for(int i = 0; i < _countResources; i++)
+        {
+            Instantiate(_resource, this.transform.position, _resource.transform.rotation);
+        }
         _animator.SetTrigger("Death");
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
         Destroy(gameObject);

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7543bcb8995e71f438ee775a6da8a9d2, type: 3}
   m_Name: PlayerChoppingState
   m_EditorClassIdentifier: 
-  treeLayer:
+  _treeLayer:
     serializedVersion: 2
     m_Bits: 512
-  choppingRange: 1.3
+  _choppingRange: 1

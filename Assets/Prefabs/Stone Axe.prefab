@@ -27,6 +27,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _toolData: {fileID: 11400000, guid: 8a3a1ee9377392d44b3d1362a5d2c002, type: 2}
+  _triggerCollider: {fileID: -8735786829163180295}
   _defaultPosition: {x: 0.094, y: -0.498, z: -0.082}
   _defaultRotation: {x: -2.248, y: -178.264, z: -7.179}
   _defaultScale: {x: 2, y: 2, z: 2}
