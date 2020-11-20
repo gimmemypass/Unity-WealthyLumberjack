@@ -29,7 +29,7 @@ public class UpgradeDialog : MonoBehaviour
         _damageField.text = (level * tool.BaseDamage).ToString();
         _baseDamageField.text = tool.BaseDamage.ToString();
         _toolNameField.text = tool.Name;
-        _priceField.text = PriceToString(price);
+        _priceField.text = Utils.PriceToString(price);
 
         _priceButton.interactable = HasPlayerEnoughMoney();
         _dialogUI.SetActive(true); 
@@ -52,16 +52,11 @@ public class UpgradeDialog : MonoBehaviour
     #region Methods
 
 
-    private string PriceToString(int price)
-    {
-        //todo
-        return price.ToString(); 
-    }
 
     private void UpdateFields(int level)
     {
         _levelField.text = level.ToString();
-        _priceField.text = PriceToString(Workbench.PriceOfLevel(level));
+        _priceField.text = Utils.PriceToString(Workbench.PriceOfLevel(level));
         _priceButton.interactable = HasPlayerEnoughMoney();
         var tool = _player.GetTool().GetToolData();
         _damageField.text = (level * tool.BaseDamage).ToString();

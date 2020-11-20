@@ -17,20 +17,12 @@ public class Shop : MonoBehaviour
     private void BuyAllResources(Player player)
     {
         var inventory = player.GetInventory();
-        try
+        foreach(KeyValuePair<ResourceData, int> kv in inventory.GetAllResourcesWithZeroing())
         {
-            foreach(KeyValuePair<ResourceData, int> kv in inventory.GetAllResourcesWithZeroing())
-            {
-                var money = kv.Key.Price * kv.Value;
-                player.AddMoney(money);
-            }
+            var money = kv.Key.Price * kv.Value;
+            player.AddMoney(money);
+        }
 
-        }
-        catch(System.Exception ex)
-        {
-            Debug.LogWarning(ex);
-        }
-        player.GetComponent<PlayerUIManager>().UpdateUI();
     }
     #endregion
 }

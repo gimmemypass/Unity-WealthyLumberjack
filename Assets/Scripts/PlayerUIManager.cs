@@ -7,28 +7,30 @@ public class PlayerUIManager : MonoBehaviour
 {
     #region Data
     [SerializeField] private Text _moneyText;
-    [SerializeField] private Text _treeCountText;
 
-    private Player _player;
+    [SerializeField] private List<ResourceListItem> _resourceItems;
+
+    [SerializeField] Player _player;
     #endregion
 
     #region Methods
     private void Start()
     {
-        _player = GetComponent<Player>();
         UpdateUI();
     }
     public void UpdateUI()
     {
         _moneyText.text = _player.GetMoney().ToString();
-        int count = 0;
         var inventory =_player.GetInventory() ;
         if(inventory != null)
-            foreach(KeyValuePair<ResourceData, int> kv in inventory.GetAllResources())
+            //foreach(KeyValuePair<ResourceData, int> kv in inventory.GetAllResources())
+            //{
+            //    _resourceItems.Count.text = kv.Value.ToString();
+            //}
+            foreach(var item in _resourceItems)
             {
-                count += kv.Value;
+                item.Count.text = inventory.GetResource(item.Data).ToString();
             }
-        _treeCountText.text = count.ToString(); 
     }
     #endregion
 

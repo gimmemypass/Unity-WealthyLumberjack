@@ -20,8 +20,6 @@ public class Resource : MonoBehaviour
         {
             var player = other.gameObject.GetComponent<Player>();
             player.GetInventory().AddResource(_data, 1);
-            player.GetComponent<PlayerUIManager>().UpdateUI();
-            //todo: event 
             //todo: add pool
             Destroy(gameObject);
         }

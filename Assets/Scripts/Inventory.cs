@@ -6,6 +6,10 @@ public class Inventory
 {
     #region Data
     private Dictionary<ResourceData, int> _storage = new Dictionary<ResourceData, int>();
+    
+    public delegate void _notificatorUI();
+    public event _notificatorUI NotifyUI;
+
     #endregion
 
     #region Interface
@@ -19,23 +23,40 @@ public class Inventory
         {
             _storage[type] = count;
         }
+        NotifyUI?.Invoke();
     }
     public void ClearStorage()
     {
-        foreach(var key in _storage.Keys)
+        //foreach(var key in _storage.Keys)
+        List<ResourceData> keys = new List<ResourceData>(_storage.Keys);
+        foreach(var key in keys)
         {
             _storage[key] = 0;
         }
+        NotifyUI?.Invoke();
     }
     public int GetResource(ResourceData type)
     {
-        return _storage[type];
+        int value;
+        if(_storage.TryGetValue(type, out value))
+        {
+            return value;
+        }
+        else
+        {
+            return 0;
+        }
     }
     public int GetResourceWithZeroing(ResourceData type)
     {
-        var ret = _storage[type];
-        _storage[type] = 0;
-        return ret;
+        int value;
+        if(_storage.TryGetValue(type, out value))
+        {
+            _storage[type] = 0;
+            NotifyUI?.Invoke();
+            return value;
+        }
+        return 0;
     }
 
     public IEnumerable GetAllResources()
@@ -53,7 +74,6 @@ public class Inventory
             yield return pair;
         }
         ClearStorage();
-
     }
     #endregion
 

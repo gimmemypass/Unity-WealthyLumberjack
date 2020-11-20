@@ -25,7 +25,9 @@ public class Player : MonoBehaviour
     private int _level;
     private int _money;
     private Inventory _inventory;
-    //todo  инвентарь 
+
+    private delegate void _notificatorUI();
+    private event _notificatorUI NotifyUI;
     #endregion
 
     #region Interface
@@ -52,6 +54,7 @@ public class Player : MonoBehaviour
         if(money > 0)
         {
             _money += money;
+            NotifyUI?.Invoke();
         }
         else
         {
@@ -65,6 +68,7 @@ public class Player : MonoBehaviour
             if(_money > money)
             {
                 _money -= money;
+                NotifyUI?.Invoke();
                 return true;
             }
             else
@@ -77,6 +81,11 @@ public class Player : MonoBehaviour
             throw new System.Exception("money < 0");
         }
     }
+    public void SetSuperJumpState()
+    {
+        _currentState.Finish();
+        SetState(_superJumpState);
+    }
     #endregion
 
     #region Methods
@@ -88,15 +97,13 @@ public class Player : MonoBehaviour
         _money = 2;
         _inventory = new Inventory();
 
+        NotifyUI += _playerUIManager.UpdateUI;
+        _inventory.NotifyUI += _playerUIManager.UpdateUI;
+
         SetState(_movingState); 
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _currentState.Finish();
-            SetState(_superJumpState); 
-        }
         _currentState.Run();
         if (_currentState.IsFinished)
         {
