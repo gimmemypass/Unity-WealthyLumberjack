@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
     public ulong GetMoney() => _money; 
     public void AddMoney(ulong money)
     {
-        if(money > 0)
+        if(money >= 0)
         {
             _money += money;
             NotifyUI?.Invoke();
