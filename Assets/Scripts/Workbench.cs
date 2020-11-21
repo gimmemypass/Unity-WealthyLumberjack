@@ -5,14 +5,14 @@ using UnityEngine;
 public class Workbench : MonoBehaviour
 {
     #region Data
-    [SerializeField] private const int _priceCoef = 2;
+    [SerializeField] private const ulong _priceCoef = 2;
     [SerializeField] private UpgradeDialog _dialogUI;
     #endregion
 
     #region Interface
-    public static int PriceOfLevel(int level)
+    public static ulong PriceOfLevel(int level)
     {
-        return level * _priceCoef; 
+        return (ulong)level * _priceCoef; 
     }
     #endregion
 

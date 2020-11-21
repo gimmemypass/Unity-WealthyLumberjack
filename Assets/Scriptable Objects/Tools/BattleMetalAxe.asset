@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BattleMetalAxe
   m_EditorClassIdentifier: 
   _name: Battle Metal Axe
-  _range: 1.4
+  _range: 1.6
   _baseDamage: 15
   _description: Stained with a resine of the enemies
   _icon: {fileID: 21300000, guid: 66dbce533729df946bee423ca768dd8c, type: 3}

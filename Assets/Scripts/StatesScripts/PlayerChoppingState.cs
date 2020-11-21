@@ -7,8 +7,9 @@ public class PlayerChoppingState : PlayerState
 {
     #region Data
     [SerializeField] private LayerMask _treeLayer;
-    [SerializeField] private float _choppingRange = 1f;
 
+
+    private Tool _tool;
     private float _percentsOfSpeed;
     private Collider[] _trees;
     #endregion
@@ -17,8 +18,10 @@ public class PlayerChoppingState : PlayerState
     public override void Init(Player player)
     {
         base.Init(player);
+        _tool = player.GetTool();
         _trees = new Collider[0];
         _player.StartCoroutine(ChopTrees());
+
     }
     public override void Run()
     {
@@ -44,7 +47,7 @@ public class PlayerChoppingState : PlayerState
     #region Methods
     private IEnumerator ChopTrees()
     {
-        _trees = Physics.OverlapSphere(_player.transform.position, _choppingRange, _treeLayer);
+        _trees = TreesArround();
         while (IsFinished == false && _trees.Length > 0)
         {
             RotateTo(_trees[0].transform); 
@@ -53,14 +56,16 @@ public class PlayerChoppingState : PlayerState
             yield return new WaitForSeconds(0.8f);
 
             if (IsFinished || _animator.GetCurrentAnimatorStateInfo(0).IsName("Chopping") == false)
-                break;
+            {
+                yield break;
+            }
 
             foreach(var tree in _trees)
             {
                 tree.GetComponent<Tree>().ApplyDamage(GetChoppingDamage());
             }
             yield return new WaitForSeconds(1);
-            _trees = Physics.OverlapSphere(_player.transform.position, _choppingRange, _treeLayer);
+            _trees = TreesArround();
         }
     }
     private void RotateTo(Transform target)
@@ -78,6 +83,7 @@ public class PlayerChoppingState : PlayerState
         var damage = tool.GetBaseDamage() * _player.GetLevel();
         return damage;
     }
+    private Collider[] TreesArround() => Physics.OverlapSphere(_player.transform.position, _tool.GetRange(), _treeLayer);
     #endregion
 
 }

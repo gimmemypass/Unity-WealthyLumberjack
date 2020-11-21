@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
 
     private Tool _tool;
     private int _level;
-    private int _money;
+    private ulong _money = 0;
     private Inventory _inventory;
 
     private delegate void _notificatorUI();
@@ -48,8 +48,8 @@ public class Player : MonoBehaviour
     {
         _level++;
     }
-    public int GetMoney() => _money; 
-    public void AddMoney(int money)
+    public ulong GetMoney() => _money; 
+    public void AddMoney(ulong money)
     {
         if(money > 0)
         {
@@ -61,11 +61,11 @@ public class Player : MonoBehaviour
             throw new System.Exception("money < 0");
         }
     }
-    public bool TryDecreaseMoney(int money)
+    public bool TryDecreaseMoney(ulong money)
     {
         if(money > 0)
         {
-            if(_money > money)
+            if(_money >= money)
             {
                 _money -= money;
                 NotifyUI?.Invoke();
@@ -94,13 +94,15 @@ public class Player : MonoBehaviour
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _level = 1;
-        _money = 2;
+        _money = 2000;
         _inventory = new Inventory();
+        
 
         NotifyUI += _playerUIManager.UpdateUI;
         _inventory.NotifyUI += _playerUIManager.UpdateUI;
 
         SetState(_movingState); 
+        NotifyUI?.Invoke();
     }
     void Update()
     {
@@ -134,9 +136,10 @@ public class Player : MonoBehaviour
     {
         if(_tool != null)
         {
-            Destroy(_tool.gameObject);
+            Destroy(_tool.gameObject); 
         }
         tool.transform.parent = _rightHand;
+
         tool.transform.localPosition = pos;
         tool.transform.localRotation = Quaternion.Euler(rot);
         tool.transform.localScale = scale;

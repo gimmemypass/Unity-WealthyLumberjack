@@ -20,8 +20,8 @@ public class Resource : MonoBehaviour
         {
             var player = other.gameObject.GetComponent<Player>();
             player.GetInventory().AddResource(_data, 1);
-            //todo: add pool
-            Destroy(gameObject);
+            GetComponent<PoolObject>().ReturnToPool();
+            //Destroy(gameObject);
         }
     }
     #endregion

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _resource: {fileID: 7277486413165203489, guid: 138747a19eef03b4f96f60f0f024c835,
     type: 3}
-  _countResources: 4
+  _countResources: 1
 --- !u!1001 &6023828337653674800
 PrefabInstance:
   m_ObjectHideFlags: 0

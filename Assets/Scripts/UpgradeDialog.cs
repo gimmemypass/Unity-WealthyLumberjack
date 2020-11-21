@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,11 +8,11 @@ public class UpgradeDialog : MonoBehaviour
 {
     #region Data
     [SerializeField] private GameObject _dialogUI;
-    [SerializeField] private Text _levelField; 
-    [SerializeField] private Text _damageField; 
-    [SerializeField] private Text _baseDamageField; 
-    [SerializeField] private Text _toolNameField; 
-    [SerializeField] private Text _priceField;
+    [SerializeField] private TextMeshProUGUI _levelField; 
+    [SerializeField] private TextMeshProUGUI _damageField; 
+    [SerializeField] private TextMeshProUGUI _baseDamageField; 
+    [SerializeField] private TextMeshProUGUI _toolNameField; 
+    [SerializeField] private TextMeshProUGUI _priceField;
     [SerializeField] private Button _priceButton;
 
     private Player _player;

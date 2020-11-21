@@ -19,7 +19,7 @@ public class Shop : MonoBehaviour
         var inventory = player.GetInventory();
         foreach(KeyValuePair<ResourceData, int> kv in inventory.GetAllResourcesWithZeroing())
         {
-            var money = kv.Key.Price * kv.Value;
+            ulong money = kv.Key.Price * (ulong)kv.Value;
             player.AddMoney(money);
         }
 

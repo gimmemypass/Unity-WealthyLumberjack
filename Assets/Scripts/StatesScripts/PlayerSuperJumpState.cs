@@ -26,6 +26,10 @@ public class PlayerSuperJumpState : PlayerState
         _animator.SetTrigger("SuperJump");
         _player.GetTool().gameObject.SetActive(false);
         yield return new WaitForSeconds(2f);
+
+        if (IsFinished)
+            yield break;
+
         var _trees = Physics.OverlapSphere(_player.transform.position, _range, _treeLayer);
         Debug.Log(_trees.Length);
         foreach(var tree in _trees)

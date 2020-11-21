@@ -14,19 +14,11 @@ public class PlayerUIManager : MonoBehaviour
     #endregion
 
     #region Methods
-    private void Start()
-    {
-        UpdateUI();
-    }
     public void UpdateUI()
     {
-        _moneyText.text = _player.GetMoney().ToString();
+        _moneyText.text = Utils.PriceToString(_player.GetMoney());
         var inventory =_player.GetInventory() ;
         if(inventory != null)
-            //foreach(KeyValuePair<ResourceData, int> kv in inventory.GetAllResources())
-            //{
-            //    _resourceItems.Count.text = kv.Value.ToString();
-            //}
             foreach(var item in _resourceItems)
             {
                 item.Count.text = inventory.GetResource(item.Data).ToString();
