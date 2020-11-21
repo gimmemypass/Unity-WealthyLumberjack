@@ -36,7 +36,7 @@ public class Tree : MonoBehaviour
     {
         _data = _resource.GetComponent<Resource>().GetData();
         _animator = GetComponent<Animator>();
-        _health = _data.Health;
+        _health = _data.Health; 
     }
     private IEnumerator Die()
     {
@@ -46,7 +46,7 @@ public class Tree : MonoBehaviour
         }
         _animator.SetTrigger("Death");
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
-        Destroy(gameObject);
+        TreesManager.SetTreeDisabled(gameObject);
     }
     #endregion
 

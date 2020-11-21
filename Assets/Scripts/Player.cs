@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _rightHand; //for axe
     [SerializeField] private PlayerUIManager _playerUIManager;
 
+    // state pattern
     [Header("States")]
     [SerializeField] private PlayerState _movingState;
     [SerializeField] private PlayerState _choppingState;
@@ -19,7 +20,6 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerState _currentState;
 
     private CharacterController _controller;
-    private Animator _animator;
 
     private Tool _tool;
     private int _level;
@@ -30,7 +30,50 @@ public class Player : MonoBehaviour
     private event _notificatorUI NotifyUI;
     #endregion
 
+    #region Interface GettingField
+
+    public CharacterController GetController() => _controller;
+    public Tool GetTool() => _tool;
+    public int GetLevel() => _level;
+    public Inventory GetInventory() => _inventory;
+
+    public ulong GetMoney() => _money;
+    #endregion
+
+    #region Interface SaveLoad
+    public void SavePlayer()
+    {
+        SaveLoadSystem.SavePlayer(this);
+    }
+    public void LoadPlayer()
+    {
+        PlayerSaveData data  = SaveLoadSystem.LoadPlayer();
+        if(data != null)
+        {
+            _level = data.level;
+            _money = data.money;
+            _inventory = new Inventory(data.inventory);
+            Vector3 pos;
+            pos.x = data.position[0];
+            pos.y = data.position[1];
+            pos.z = data.position[2];
+            transform.position = pos ;
+        }
+        else
+        {
+            _level = 1;
+            _money = 0;
+            _inventory = new Inventory();
+            SavePlayer();
+        }
+        
+    }
+    #endregion
     #region Interface
+    public void LevelUp()
+    {
+        _level++;
+    }
     public Vector3 GetJoystickInputValue()
     {
         float horizontal = _joystick.Horizontal;
@@ -38,17 +81,6 @@ public class Player : MonoBehaviour
         Vector3 direction = new Vector3(horizontal, 0f, vertical);
         return direction;
     }
-    public CharacterController GetController() => _controller;
-    public Animator GetAnimator() => _animator;
-    public Tool GetTool() => _tool;
-    public int GetLevel() => _level;
-    public Inventory GetInventory() => _inventory;
-
-    public void LevelUp()
-    {
-        _level++;
-    }
-    public ulong GetMoney() => _money; 
     public void AddMoney(ulong money)
     {
         if(money >= 0)
@@ -86,17 +118,29 @@ public class Player : MonoBehaviour
         _currentState.Finish();
         SetState(_superJumpState);
     }
+    public void TakeTool(Tool tool, Vector3 pos, Vector3 rot, Vector3 scale)
+    {
+        if(_tool != null)
+        {
+            //Destroy(_tool.gameObject);
+            _tool.gameObject.SetActive(false);
+        }
+        tool.transform.parent = _rightHand;
+
+        tool.transform.localPosition = pos;
+        tool.transform.localRotation = Quaternion.Euler(rot);
+        tool.transform.localScale = scale;
+
+        _tool = tool; 
+    }
+
     #endregion
 
     #region Methods
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
-        _animator = GetComponent<Animator>();
-        _level = 1;
-        _money = 2000;
-        _inventory = new Inventory();
-        
+        LoadPlayer();
 
         NotifyUI += _playerUIManager.UpdateUI;
         _inventory.NotifyUI += _playerUIManager.UpdateUI;
@@ -113,6 +157,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnApplicationQuit()
+    {
+        SavePlayer();
+    }
     private void SetState(PlayerState currentState)
     {
         _currentState = Instantiate(currentState);
@@ -122,7 +170,7 @@ public class Player : MonoBehaviour
     {
         var direction = GetJoystickInputValue();
         var _percentsOfSpeed = direction.magnitude;
-        if(_percentsOfSpeed >= PlayerMovementState.STARTVALUE)
+        if(_percentsOfSpeed >= PlayerMovementState.START_MOVE_VALUE)
         {
             SetState(_movingState);
         }
@@ -132,19 +180,5 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void TakeTool(Tool tool, Vector3 pos, Vector3 rot, Vector3 scale)
-    {
-        if(_tool != null)
-        {
-            Destroy(_tool.gameObject); 
-        }
-        tool.transform.parent = _rightHand;
-
-        tool.transform.localPosition = pos;
-        tool.transform.localRotation = Quaternion.Euler(rot);
-        tool.transform.localScale = scale;
-
-        _tool = tool; 
-    }
     #endregion
 }

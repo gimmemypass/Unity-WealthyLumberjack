@@ -7,6 +7,7 @@ public class PlayerChoppingState : PlayerState
 {
     #region Data
     [SerializeField] private LayerMask _treeLayer;
+    [SerializeField] private AudioClip _choppingClip;
 
 
     private Tool _tool;
@@ -27,7 +28,7 @@ public class PlayerChoppingState : PlayerState
     {
         var direction = _player.GetJoystickInputValue();
         _percentsOfSpeed = direction.magnitude;
-        if (_percentsOfSpeed >= PlayerMovementState.STARTVALUE)
+        if (_percentsOfSpeed >= PlayerMovementState.START_MOVE_VALUE)
         {
             Finish();
             return;
@@ -60,6 +61,7 @@ public class PlayerChoppingState : PlayerState
                 yield break;
             }
 
+            _audioSource.PlayOneShot(_choppingClip);
             foreach(var tree in _trees)
             {
                 tree.GetComponent<Tree>().ApplyDamage(GetChoppingDamage());

@@ -15,4 +15,4 @@ MonoBehaviour:
   _treeLayer:
     serializedVersion: 2
     m_Bits: 512
-  _choppingRange: 1
+  _choppingClip: {fileID: 8300000, guid: 2fe079cdc3ce75b458f23e3668bb9498, type: 3}

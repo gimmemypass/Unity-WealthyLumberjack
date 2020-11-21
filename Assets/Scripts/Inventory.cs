@@ -2,17 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory 
+[System.Serializable]
+public class Inventory  
 {
     #region Data
     private Dictionary<ResourceData, int> _storage = new Dictionary<ResourceData, int>();
-    
+
     public delegate void _notificatorUI();
     public event _notificatorUI NotifyUI;
 
     #endregion
-
+    public Inventory(InventorySaveData data)
+    {
+        for(int i = 0; i < data.keys.Count; i++)
+        {
+            var res = Resources.Load<ResourceData>($"Scriptable Objects/Trees/{data.keys[i]}");
+            _storage[res] = data.values[i];
+        }
+    }
+    public Inventory() { }
     #region Interface
+    public List<ResourceData> GetKeys() => new List<ResourceData>(_storage.Keys);
+    public List<int> GetValues() => new List<int>(_storage.Values);
     public void AddResource(ResourceData type, int count)
     {
         if (_storage.TryGetValue(type, out _))

@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerMovementState : PlayerState
 {
     #region Data
-    public static float STARTVALUE = 0.3f;
+    public static float START_MOVE_VALUE = 0.3f;
     [SerializeField] private float _speed = 6f;
     [SerializeField] private float _turnSmoothTime = 0.1f;
     
@@ -24,7 +24,7 @@ public class PlayerMovementState : PlayerState
     {
         var direction = _player.GetJoystickInputValue();
         _percentsOfSpeed = direction.magnitude;
-        if(_percentsOfSpeed >= STARTVALUE)
+        if(_percentsOfSpeed >= START_MOVE_VALUE)
         {
             MovePlayer(direction);
         }

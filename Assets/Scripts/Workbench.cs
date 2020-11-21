@@ -6,13 +6,14 @@ public class Workbench : MonoBehaviour
 {
     #region Data
     [SerializeField] private const ulong _priceCoef = 2;
+    [SerializeField] private const ulong _startPrice = 10;
     [SerializeField] private UpgradeDialog _dialogUI;
     #endregion
 
     #region Interface
     public static ulong PriceOfLevel(int level)
     {
-        return (ulong)level * _priceCoef; 
+        return _startPrice * (ulong)Mathf.Pow(_priceCoef, level) ; 
     }
     #endregion
 

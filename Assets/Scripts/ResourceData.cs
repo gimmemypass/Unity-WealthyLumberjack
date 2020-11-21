@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 [CreateAssetMenu(order = 51, menuName = "Scriptable Objects/ResourceData")]
 public class ResourceData : ScriptableObject
 {
@@ -13,10 +14,10 @@ public class ResourceData : ScriptableObject
     #endregion
 
     #region Interface
-    public string Name { get => _name; }
-    public float Health { get => _health; }
-    public Sprite Icon { get => _icon;  }
-    public ulong Price { get => price; }
+    public float Health { get => _health; set => _health = value; }
+    public string Name { get => _name; set => _name = value; }
+    public Sprite Icon { get => _icon; set => _icon = value; }
+    public ulong Price { get => price; set => price = value; }
     #endregion
 }
 

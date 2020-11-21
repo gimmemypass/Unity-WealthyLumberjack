@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af445b65700649843b2d33e3e2d8c436, type: 3}
-  m_Name: GreenTree
+  m_Name: BlueTree
   m_EditorClassIdentifier: 
-  _name: GreenTree
-  _health: 100
-  _icon: {fileID: 21300000, guid: e9cae0b0a6bf8bf4287bccec6584a9c6, type: 3}
-  price: 100
+  _name: Blue Tree
+  _health: 180
+  _icon: {fileID: 21300000, guid: 4bcfe2ec1fe92f94081f325fbb33c78d, type: 3}
+  price: 200

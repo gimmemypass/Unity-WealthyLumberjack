@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ public class PlayerUIManager : MonoBehaviour
     [SerializeField] Player _player;
     #endregion
 
-    #region Methods
+    #region Interface 
     public void UpdateUI()
     {
         _moneyText.text = Utils.PriceToString(_player.GetMoney());
@@ -23,6 +24,13 @@ public class PlayerUIManager : MonoBehaviour
             {
                 item.Count.text = inventory.GetResource(item.Data).ToString();
             }
+    }
+
+    public void OpenMenu()
+    {
+        _player.SavePlayer();
+        TreesManager.SaveTrees();
+        SceneManager.LoadScene(0);
     }
     #endregion
 

@@ -9,6 +9,7 @@ public class PlayerSuperJumpState : PlayerState
     [SerializeField] private LayerMask _treeLayer;
     [SerializeField] private float _range = 2f;
     [SerializeField] private float _baseDamage;
+    [SerializeField] private AudioClip _jumpClip;
     #endregion
 
     #region Interface
@@ -25,11 +26,11 @@ public class PlayerSuperJumpState : PlayerState
     {
         _animator.SetTrigger("SuperJump");
         _player.GetTool().gameObject.SetActive(false);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
         if (IsFinished)
             yield break;
-
+        _audioSource.PlayOneShot(_jumpClip);
         var _trees = Physics.OverlapSphere(_player.transform.position, _range, _treeLayer);
         Debug.Log(_trees.Length);
         foreach(var tree in _trees)

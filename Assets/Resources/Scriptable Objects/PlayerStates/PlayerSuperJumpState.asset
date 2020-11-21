@@ -16,4 +16,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   _range: 3
-  _baseDamage: 10
+  _baseDamage: 3
+  _jumpClip: {fileID: 8300000, guid: aaa62193fbcbe224e9855d263192084e, type: 3}

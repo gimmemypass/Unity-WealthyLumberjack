@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[System.Serializable]
 [CreateAssetMenu(menuName = "Scriptable Objects/ToolData", order = 51)]
 public class ToolData : ScriptableObject
 {

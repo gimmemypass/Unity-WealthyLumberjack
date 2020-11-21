@@ -6,13 +6,14 @@ public class CameraFolow : MonoBehaviour
     [SerializeField] private Transform _target;
     [SerializeField] private float _smoothSpeed = 0.125f;
     [SerializeField] private Vector3 _offset;
+    [SerializeField] private Vector3 _startPos;
 
     #endregion
 
     #region Methods
     private void Start()
     {
-        transform.position = _target.position + _offset;
+        transform.position = _startPos ;
     }
     private void LateUpdate()
     {
